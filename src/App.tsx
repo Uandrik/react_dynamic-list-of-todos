@@ -17,12 +17,15 @@ export const App: React.FC = () => {
   const [user, setUser] = useState<User | null>(null);
   const [query, setQuery] = useState('');
   const [option, setOption] = useState('all');
+  const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
-    getTodos().then(setTodos);
+    getTodos()
+      .then(setTodos)
+      .then(() => setIsLoaded(true));
   }, []);
 
-  useMemo(() => {
+  useEffect(() => {
     if (selectedTodo) {
       getUser(selectedTodo.userId).then(setUser);
     }
@@ -66,9 +69,9 @@ export const App: React.FC = () => {
             </div>
 
             <div className="block">
-              {todos.length === 0 && <Loader />}
+              {!isLoaded && <Loader />}
 
-              {todos && (
+              {isLoaded && (
                 <TodoList
                   todos={visibleGoods}
                   selectedTodo={selectedTodo}

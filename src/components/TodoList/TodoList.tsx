@@ -1,10 +1,11 @@
 import React from 'react';
 import { Todo } from '../../types/Todo';
+import classNames from 'classnames';
 
 type Props = {
   todos: Todo[];
   selectedTodo: Todo | null;
-  onSelected: (user: Todo) => void;
+  onSelected: (todo: Todo) => void;
 };
 
 export const TodoList: React.FC<Props> = ({
@@ -38,7 +39,12 @@ export const TodoList: React.FC<Props> = ({
             )}
           </td>
           <td className="is-vcentered is-expanded">
-            <p className={`has-text-${todo.completed ? 'success' : 'danger'}`}>
+            <p
+              className={classNames({
+                'has-text-success': todo.completed,
+                'has-text-danger': !todo.completed,
+              })}
+            >
               {todo.title}
             </p>
           </td>
@@ -50,7 +56,12 @@ export const TodoList: React.FC<Props> = ({
               type="button"
             >
               <span className="icon">
-                <i className={`far fa-eye${selectedTodo ? '-slash' : ''}`} />
+                <i
+                  className={classNames({
+                    'far fa-eye-slash': todo.id === selectedTodo?.id,
+                    'far fa-eye': todo.id !== selectedTodo?.id,
+                  })}
+                />
               </span>
             </button>
           </td>
